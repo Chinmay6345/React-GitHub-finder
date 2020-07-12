@@ -9,8 +9,12 @@ class Search extends Component {
   };
   Save = (event) => {
     event.preventDefault();
-    this.props.searchUsers(this.state.inputVal);
-    this.setState({ inputVal: "" });
+    if (this.state.inputVal.length == 0) {
+      this.props.setAlert("Please enter a value", "light");
+    } else {
+      this.props.searchUsers(this.state.inputVal);
+      this.setState({ inputVal: "" });
+    }
   };
   render() {
     let btn = null;
@@ -50,5 +54,6 @@ class Search extends Component {
 Search.propTypes = {
   searchUsers: PropTypes.func.isRequired,
   clearUsers: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired,
 };
 export default Search;
