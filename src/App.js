@@ -19,9 +19,23 @@ class App extends Component {
   }
   SearchUsers = async (searchtext) => {
     this.setState({ loading: true });
-    const url = `https://api.github.com/search/users?q=${searchtext}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
-    const response = await axios.get(url);
-    this.setState({ loading: false, users: response.data.items });
+    let url = null;
+    let response = null;
+    if (searchtext.length !== 0) {
+      url = `https://api.github.com/search/users?q=${searchtext}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
+      response = await axios.get(url);
+      this.setState({
+        loading: false,
+        users: response.data.items,
+      });
+    } else {
+      url = `https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
+      response = await axios.get(url);
+      this.setState({ loading: false, users: response.data });
+    }
+  };
+  clearUsers = () => {
+    this.setState({ loading: false, users: [] });
   };
   render() {
     return (
@@ -29,7 +43,11 @@ class App extends Component {
         <div className="App">
           <NavBar />
           <div className="container">
-            <Search searchUsers={this.SearchUsers} />
+            <Search
+              searchUsers={this.SearchUsers}
+              clearUsers={this.clearUsers}
+              users={this.state.users}
+            />
             <Users users={this.state.users} loading={this.state.loading} />
           </div>
         </div>

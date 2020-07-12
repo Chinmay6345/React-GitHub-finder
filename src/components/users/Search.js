@@ -13,6 +13,18 @@ class Search extends Component {
     this.setState({ inputVal: "" });
   };
   render() {
+    let btn = null;
+    console.log(this.props.users.length > 0);
+    if (this.props.users.length > 0) {
+      btn = (
+        <button
+          className="btn btn-light btn-block"
+          onClick={this.props.clearUsers}
+        >
+          Clear
+        </button>
+      );
+    }
     return (
       <div>
         <form className="form" onSubmit={this.Save}>
@@ -30,11 +42,13 @@ class Search extends Component {
             className="btn btn-dark btn-block"
           />
         </form>
+        {btn}
       </div>
     );
   }
 }
 Search.propTypes = {
   searchUsers: PropTypes.func.isRequired,
+  clearUsers: PropTypes.func.isRequired,
 };
 export default Search;
