@@ -1,6 +1,8 @@
 import React from "react";
 import UserItem from "./UserItem";
 import Spinner from "../layout/Spinner";
+import PropTypes from "prop-types";
+
 const users = ({ users, loading }) => {
   let html = null;
   if (loading) {
@@ -16,7 +18,10 @@ const users = ({ users, loading }) => {
   }
   return html;
 };
-
+users.propTypes = {
+  users: PropTypes.array.isRequired,
+  loading: PropTypes.bool.isRequired,
+};
 const userStyle = {
   display: "grid",
   gridTemplateColumns: "repeat(3,1fr)",
