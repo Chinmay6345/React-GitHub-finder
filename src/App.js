@@ -16,15 +16,13 @@ class App extends Component {
     alert: null,
     repos: [],
   };
-  // async componentDidMount() {
+  async componentDidMount() {
+    this.setState({ loading: true });
+    const url = `https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
 
-  //     this.setState({ loading: true });
-  //     const url = `https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
-
-  //     const response = await axios.get(url);
-  //     this.setState({ loading: false, users: response.data });
-  //
-  // }
+    const response = await axios.get(url);
+    this.setState({ loading: false, users: response.data });
+  }
   SearchUsers = async (searchtext) => {
     this.setState({ loading: true });
     let url = null;
@@ -37,14 +35,14 @@ class App extends Component {
         users: response.data.items,
       });
     } else {
-      url = `https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
+      url = `https://api.github.com/users?since=1995&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
       response = await axios.get(url);
       this.setState({ loading: false, users: response.data });
     }
   };
   getUser = async (userName) => {
     this.setState({ loading: true });
-    let url = `https://api.github.com/users/${userName}?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
+    let url = `https://api.github.com/users/${userName}?since=1995&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
     let response = await axios.get(url);
     this.setState({
       loading: false,
