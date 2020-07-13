@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
 const userItem = (props) => {
-  const { avatar_url, login, html_url } = props.user;
+  const { avatar_url, login } = props.user;
   return (
     <div className="card text-center">
       <img

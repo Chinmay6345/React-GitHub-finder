@@ -3,8 +3,8 @@ import PropTypes from "prop-types";
 import "../../css/bootstrap.css";
 const repos = ({ repos }) => (
   <div className="card">
-    <div class="table-responsive">
-      <table class="table table-bordered">
+    <div className="table-responsive">
+      <table className="table table-bordered">
         <thead>
           <tr>
             <th>Sr No.</th>

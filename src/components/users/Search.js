@@ -8,7 +8,7 @@ const Search = (props) => {
   };
   const save = (event) => {
     event.preventDefault();
-    if (inputVal.length == 0) {
+    if (inputVal.length === 0) {
       setAlert("Please enter a value", "light");
     } else {
       searchUsers(inputVal);

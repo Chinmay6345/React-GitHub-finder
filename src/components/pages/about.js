@@ -2,10 +2,10 @@ import React, { Fragment } from "react";
 
 const about = (props) => {
   return (
-    <div>
+    <Fragment>
       <h1>App to search Git Hub users</h1>
       <p>Search user by name</p>
-    </div>
+    </Fragment>
   );
 };
 export default about;
