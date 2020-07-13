@@ -16,13 +16,13 @@ class App extends Component {
     alert: null,
   };
   // async componentDidMount() {
-  //   if (window.location.href === "http://localhost:3000/") {
+
   //     this.setState({ loading: true });
   //     const url = `https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
 
   //     const response = await axios.get(url);
   //     this.setState({ loading: false, users: response.data });
-  //   }
+  //
   // }
   SearchUsers = async (searchtext) => {
     this.setState({ loading: true });
@@ -73,18 +73,6 @@ class App extends Component {
         <div className="container">
           <Alert alert={alert} />
           <Switch>
-            <Route path="/about" component={About} />
-            <Route
-              path="/user/:login"
-              render={(props) => (
-                <User
-                  {...props}
-                  getUser={this.getUser}
-                  user={user}
-                  loading={loading}
-                />
-              )}
-            />
             <Route
               path="/"
               exact
@@ -98,6 +86,19 @@ class App extends Component {
                   />
                   <Users users={users} loading={loading} />
                 </Fragment>
+              )}
+            />
+            <Route exact path="/about" component={About} />
+            <Route
+              exact
+              path={`/user/:login`}
+              render={(props) => (
+                <User
+                  {...props}
+                  getUser={this.getUser}
+                  user={user}
+                  loading={loading}
+                />
               )}
             />
           </Switch>
