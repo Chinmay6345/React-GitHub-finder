@@ -2,9 +2,11 @@ import React, { Component, Fragment } from "react";
 import Spinner from "../layout/Spinner";
 import PropTypes from "prop-types";
 import { Link } from "react-router-dom";
+import Repos from "../repositories/repos";
 class User extends Component {
   componentDidMount() {
     this.props.getUser(this.props.match.params.login);
+    this.props.getRepos(this.props.match.params.login);
   }
   render() {
     const {
@@ -22,7 +24,7 @@ class User extends Component {
       company,
       blog,
     } = this.props.user;
-    const { loading } = this.props;
+    const { loading, repos } = this.props;
     return (
       <Fragment>
         <Link to="/" className="btn btn-light">
@@ -88,6 +90,7 @@ class User extends Component {
           </div>
           <div className="badge badge-light">Public gists :{public_gists}</div>
         </div>
+        <Repos repos={repos} />
       </Fragment>
     );
   }
