@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import NavBar from "./components/layout/NavBar";
 import "./App.css";
 import axios from "axios";
+import { Route, Switch } from "react-router-dom";
 import Search from "./components/users/Search";
 import Users from "./components/users/Users";
 import Alert from "./components/layout/alert";
@@ -57,12 +58,19 @@ class App extends Component {
           <NavBar />
           <div className="container">
             <Alert alert={this.state.alert} />
-            <Search
-              searchUsers={this.SearchUsers}
-              clearUsers={this.clearUsers}
-              users={this.state.users}
-              setAlert={this.setAlert}
+            <Route
+              exact
+              path="/"
+              render={(props) => (
+                <Search
+                  searchUsers={this.SearchUsers}
+                  clearUsers={this.clearUsers}
+                  users={this.state.users}
+                  setAlert={this.setAlert}
+                />
+              )}
             />
+
             <Users users={this.state.users} loading={this.state.loading} />
           </div>
         </div>
