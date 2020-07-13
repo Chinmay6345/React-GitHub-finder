@@ -18,7 +18,6 @@ class Search extends Component {
   };
   render() {
     let btn = null;
-    console.log(this.props.users.length > 0);
     if (this.props.users.length > 0) {
       btn = (
         <button
