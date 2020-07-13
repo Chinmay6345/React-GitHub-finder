@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment, useState } from "react";
 import NavBar from "./components/layout/NavBar";
 import "./App.css";
 import axios from "axios";
@@ -8,114 +8,104 @@ import Users from "./components/users/Users";
 import User from "./components/users/user";
 import Alert from "./components/layout/alert";
 import About from "./components/pages/about";
-class App extends Component {
-  state = {
-    users: [],
-    user: {},
-    loading: false,
-    alert: null,
-    repos: [],
-  };
-  async componentDidMount() {
-    this.setState({ loading: true });
-    const url = `https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
+const App = (props) => {
+  const [users, SetUsers] = useState(new Array());
+  const [user, Setuser] = useState({});
+  const [loading, Setloading] = useState(false);
+  const [alert, setAlertVal] = useState(null);
+  const [repos, SetRepo] = useState(new Array());
 
-    const response = await axios.get(url);
-    this.setState({ loading: false, users: response.data });
-  }
-  SearchUsers = async (searchtext) => {
-    this.setState({ loading: true });
+  // async componentDidMount() {
+  //   this.setState({ loading: true });
+  //   const url = `https://api.github.com/users?client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
+
+  //   const response = await axios.get(url);
+  //   this.setState({ loading: false, users: response.data });
+  // }
+  const SearchUsers = async (searchtext) => {
+    Setloading(true);
     let url = null;
     let response = null;
     if (searchtext.length !== 0) {
       url = `https://api.github.com/search/users?q=${searchtext}&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
       response = await axios.get(url);
-      this.setState({
-        loading: false,
-        users: response.data.items,
-      });
+      Setloading(false);
+      SetUsers(response.data.items);
     } else {
       url = `https://api.github.com/users?since=1995&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
       response = await axios.get(url);
-      this.setState({ loading: false, users: response.data });
+      Setloading(false);
+      SetUsers(response.data);
     }
   };
-  getUser = async (userName) => {
-    this.setState({ loading: true });
+  const getUser = async (userName) => {
+    Setloading(true);
     let url = `https://api.github.com/users/${userName}?since=1995&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
     let response = await axios.get(url);
-    this.setState({
-      loading: false,
-      user: response.data,
-    });
+    Setloading(false);
+    Setuser(response.data);
   };
-  getUserRepo = async (userName) => {
-    this.setState({ loading: true });
+  const getUserRepo = async (userName) => {
+    Setloading(true);
     let url = `https://api.github.com/users/${userName}/repos?per_page=100&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
     let response = await axios.get(url);
-    this.setState({
-      loading: false,
-      repos: response.data,
-    });
+    Setloading(false);
+    SetRepo(response.data);
   };
 
-  clearUsers = () => {
-    this.setState({ loading: false, users: [] });
+  const clearUsers = () => {
+    Setloading(false);
+    SetUsers(new Array());
   };
-  setAlert = (msg, type) => {
-    this.setState({
-      alert: {
-        msg: msg,
-        type: type,
-      },
+  const setAlert = (msg, type) => {
+    setAlertVal({
+      msg: msg,
+      type: type,
     });
     setTimeout(() => {
-      this.setState({ alert: null });
+      setAlertVal(null);
     }, 5000);
   };
-  render() {
-    const { users, user, alert, loading, repos } = this.state;
-    return (
-      <div className="App">
-        <NavBar />
-        <div className="container">
-          <Alert alert={alert} />
-          <Switch>
-            <Route
-              path="/"
-              exact
-              render={(props) => (
-                <Fragment>
-                  <Search
-                    searchUsers={this.SearchUsers}
-                    clearUsers={this.clearUsers}
-                    users={users}
-                    setAlert={this.setAlert}
-                  />
-                  <Users users={users} loading={loading} />
-                </Fragment>
-              )}
-            />
-            <Route exact path="/about" component={About} />
-            <Route
-              exact
-              path={`/user/:login`}
-              render={(props) => (
-                <User
-                  {...props}
-                  getUser={this.getUser}
-                  getRepos={this.getUserRepo}
-                  user={user}
-                  repos={repos}
-                  loading={loading}
+  return (
+    <div className="App">
+      <NavBar />
+      <div className="container">
+        <Alert alert={alert} />
+        <Switch>
+          <Route
+            path="/"
+            exact
+            render={() => (
+              <Fragment>
+                <Search
+                  searchUsers={SearchUsers}
+                  clearUsers={clearUsers}
+                  users={users}
+                  setAlert={setAlert}
                 />
-              )}
-            />
-          </Switch>
-        </div>
+                <Users users={users} loading={loading} />
+              </Fragment>
+            )}
+          />
+          <Route exact path="/about" component={About} />
+          <Route
+            exact
+            path={`/user/:login`}
+            render={(props) => (
+              <User
+                {...props}
+                getUser={getUser}
+                getRepos={getUserRepo}
+                user={user}
+                repos={repos}
+                loading={loading}
+              />
+            )}
+          />
+        </Switch>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default App;
