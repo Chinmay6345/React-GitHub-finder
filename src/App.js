@@ -53,7 +53,7 @@ class App extends Component {
   };
   getUserRepo = async (userName) => {
     this.setState({ loading: true });
-    let url = `https://api.github.com/users/${userName}/repos?per_page=10&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
+    let url = `https://api.github.com/users/${userName}/repos?per_page=100&sort=created:asc&client_id=${process.env.REACT_APP_GITHUB_CLIENT_ID}&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`;
     let response = await axios.get(url);
     this.setState({
       loading: false,
