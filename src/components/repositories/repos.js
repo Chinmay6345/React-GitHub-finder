@@ -7,13 +7,15 @@ const repos = ({ repos }) => (
       <table class="table table-bordered">
         <thead>
           <tr>
+            <th>Sr No.</th>
             <th>Repository name</th>
             <th>Link</th>
           </tr>
         </thead>
         <tbody>
-          {repos.map((repo) => (
+          {repos.map((repo, index) => (
             <tr key={repo.id}>
+              <td>{index + 1}</td>
               <td>{repo.name}</td>
               <td>
                 <a href={repo.html_url}>{repo.html_url}</a>
